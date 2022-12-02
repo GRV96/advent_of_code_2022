@@ -4,8 +4,8 @@ from sys import argv
 from data_reading import data_from_lines
 
 
-_SHAPE_SCORES =\
-	{"A": 1,
+_SHAPE_SCORES = {\
+	"A": 1,
 	"X": 1,
 	"B": 2,
 	"Y": 2,
@@ -18,7 +18,7 @@ _SPACE = " "
 def _rock_paper_scissors_round(opponent, player):
 	score = _SHAPE_SCORES[player]
 
-	score += _score_for_shapes(opponent, player)
+	score += _score_for_outcome(opponent, player)
 
 	return score
 
@@ -30,7 +30,7 @@ def _rock_paper_scissors_round_raw_data(data):
 	return _rock_paper_scissors_round(opponent, player)
 
 
-def _score_for_shapes(opponent, player):
+def _score_for_outcome(opponent, player):
 	score = -1
 
 	if opponent == "A":

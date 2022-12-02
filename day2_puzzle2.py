@@ -4,10 +4,18 @@ from sys import argv
 from data_reading import data_from_lines
 
 
-_SHAPE_SCORES =\
-	{"A": 1,
-	"B": 2,
-	"C": 3}
+_ROCK = "A"
+_PAPER = "B"
+_SCISSORS = "C"
+
+_LOOSE = "X"
+_DRAW = "Y"
+_WIN = "Z"
+
+_SHAPE_SCORES = {\
+	_ROCK: 1,
+	_PAPER: 2,
+	_SCISSORS: 3}
 
 _SPACE = " "
 
@@ -15,29 +23,29 @@ _SPACE = " "
 def _choose_shape(opponent, strategy):
 	shape = ""
 
-	if opponent == "A":
-		if strategy == "X":
-			shape = "C"
-		elif strategy == "Y":
-			shape = "A"
-		elif strategy == "Z":
-			shape = "B"
+	if opponent == _ROCK:
+		if strategy == _LOOSE:
+			shape = _SCISSORS
+		elif strategy == _DRAW:
+			shape = _ROCK
+		elif strategy == _WIN:
+			shape = _PAPER
 
-	elif opponent == "B":
-		if strategy == "X":
-			shape = "A"
-		elif strategy == "Y":
-			shape = "B"
-		elif strategy == "Z":
-			shape = "C"
+	elif opponent == _PAPER:
+		if strategy == _LOOSE:
+			shape = _ROCK
+		elif strategy == _DRAW:
+			shape = _PAPER
+		elif strategy == _WIN:
+			shape = _SCISSORS
 
-	elif opponent == "C":
-		if strategy == "X":
-			shape = "B"
-		elif strategy == "Y":
-			shape = "C"
-		elif strategy == "Z":
-			shape = "A"
+	elif opponent == _SCISSORS:
+		if strategy == _LOOSE:
+			shape = _PAPER
+		elif strategy == _DRAW:
+			shape = _SCISSORS
+		elif strategy == _WIN:
+			shape = _ROCK
 
 	return shape
 
@@ -45,7 +53,7 @@ def _choose_shape(opponent, strategy):
 def _rock_paper_scissors_round(opponent, strategy):
 	shape = _choose_shape(opponent, strategy)
 	score = _SHAPE_SCORES[shape]
-	score += _score_for_shapes(opponent, shape)
+	score += _score_for_outcome(opponent, shape)
 	return score
 
 
@@ -56,31 +64,31 @@ def _rock_paper_scissors_round_raw_data(data):
 	return _rock_paper_scissors_round(opponent, strategy)
 
 
-def _score_for_shapes(opponent, player):
+def _score_for_outcome(opponent, player):
 	score = -1
 
-	if opponent == "A":
-		if player == "A":
+	if opponent == _ROCK:
+		if player == _ROCK:
 			score = 3
-		elif player == "B":
+		elif player == _PAPER:
 			score = 6
-		elif player == "C":
+		elif player == _SCISSORS:
 			score = 0
 
-	elif opponent == "B":
-		if player == "A":
+	elif opponent == _PAPER:
+		if player == _ROCK:
 			score = 0
-		elif player == "B":
+		elif player == _PAPER:
 			score = 3
-		elif player == "C":
+		elif player == _SCISSORS:
 			score = 6
 
-	elif opponent == "C":
-		if player == "A":
+	elif opponent == _SCISSORS:
+		if player == _ROCK:
 			score = 6
-		elif player == "B":
+		elif player == _PAPER:
 			score = 0
-		elif player == "C":
+		elif player == _SCISSORS:
 			score = 3
 
 	return score
