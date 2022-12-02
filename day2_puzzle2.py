@@ -12,7 +12,7 @@ _LOOSE = "X"
 _DRAW = "Y"
 _WIN = "Z"
 
-_SHAPE_SCORES = {\
+_SHAPE_SCORES = {
 	_ROCK: 1,
 	_PAPER: 2,
 	_SCISSORS: 3}
