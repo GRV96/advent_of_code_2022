@@ -9,15 +9,15 @@ data_path = Path(argv[1])
 calorie_lines = lines_from_file(data_path)
 calorie_lines.append("")
 
-elf_calories = [0]
 calories = 0
+max_calories = 0
 
 for line in calorie_lines:
 	try:
 		calories += int(line)
 	
 	except:
-		elf_calories.append(calories)
+		max_calories = max(calories, max_calories)
 		calories = 0
 
-print(max(elf_calories))
+print(max_calories)
