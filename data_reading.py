@@ -24,7 +24,7 @@ def data_from_lines(data_path, conversion=None):
 	# data_path is of type pathlib.Path.
 	# conversion is a function that takes a line as its
 	# only argument and transforms it into usable data.
-	lines = _lines_from_file(data_path)
+	lines = lines_from_file(data_path)
 	data = list()
 
 	if conversion is None:
@@ -41,7 +41,7 @@ def data_from_lines(data_path, conversion=None):
 	return data
 
 
-def _lines_from_file(path):
+def lines_from_file(path):
 	# path is of type pathlib.Path.
 	with path.open(mode=_FILE_MODE_R) as data_file:
 		content = data_file.read()
