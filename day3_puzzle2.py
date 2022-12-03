@@ -33,18 +33,12 @@ for letter in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ":
 priority_sum = 0
 group_index = 0
 for group_index in range(0, num_rucksacks, 3):
-	group = rucksacks[group_index: group_index+3]
-
-	ignored = list()
 	badge = None
-	while badge is None:
-		candidate = _common_letter_in_strings(group[0], group[1], ignored)
 
-		if candidate in group[2]:
-			ignored.append(candidate)
-
-		else:
-			badge = candidate
+	for item in rucksacks[group_index]:
+		if item in rucksacks[group_index+1]\
+				and item in rucksacks[group_index+2]:
+			badge = item
 
 	priority_sum += priorities[badge]
 
