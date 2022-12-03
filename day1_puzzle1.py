@@ -15,7 +15,7 @@ max_calories = 0
 for line in calorie_lines:
 	try:
 		calories += int(line)
-	
+
 	except:
 		max_calories = max(calories, max_calories)
 		calories = 0

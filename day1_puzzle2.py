@@ -15,7 +15,7 @@ calories = 0
 for line in calorie_lines:
 	try:
 		calories += int(line)
-	
+
 	except:
 		elf_calories.append(calories)
 		calories = 0
