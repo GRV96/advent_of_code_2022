@@ -7,10 +7,8 @@ from data_reading import data_from_lines
 def _find_separate_identical_items(comp1, comp2):
 	for item1 in comp1:
 
-		for item2 in comp2:
-
-			if item1 == item2:
-				return item1
+		if item1 in comp2:
+			return item1
 
 	return ""
 
