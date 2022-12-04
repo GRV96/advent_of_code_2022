@@ -1,5 +1,5 @@
 from pathlib import Path
-from sys import argv
+from sys import argv, exit
 
 from data_reading import data_from_lines
 
@@ -34,6 +34,15 @@ def _get_ranges_from_pair(pair):
 
 data_path = Path(argv[1])
 
+puzzle_num = int(argv[2])
+if puzzle_num == 1:
+	detection = lambda r1, r2: r1.includes(r2) or r2.includes(r1)
+elif puzzle_num == 2:
+	detection = lambda r1, r2: r1.overlaps(r2) or r2.overlaps(r1)
+else:
+	print("ERROR! The puzzle numbers are 1 and 2.")
+	exit()
+
 pairs = data_from_lines(data_path, _get_ranges_from_pair)
 
 overlaps = 0
@@ -41,8 +50,7 @@ for pair in pairs:
 	range1 = pair[0]
 	range2 = pair[1]
 
-#	if range1.includes(range2) or range2.includes(range1):
-	if range1.overlaps(range2) or range2.overlaps(range1):
+	if detection(range1, range2):
 		overlaps += 1
 
 print(overlaps)
