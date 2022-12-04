@@ -10,8 +10,17 @@ class _Range:
 		self._lower = lower
 		self._upper = upper
 
+	def __repr__(self):
+		return self.__class__.__name__ + f"({self._lower}, {self._upper})"
+
+	def contains(self, number):
+		return self._lower <= number and number <= self._upper
+
 	def includes(self, other):
 		return self._lower <= other._lower and self._upper >= other._upper
+
+	def overlaps(self, other):
+		return self.contains(other._lower) or self.contains(other._upper)
 
 
 def _get_ranges_from_pair(pair):
@@ -31,8 +40,14 @@ overlaps = 0
 for pair in pairs:
 	range1 = pair[0]
 	range2 = pair[1]
+	x = repr(range1) + ", " + repr(range2)
+	o = ": F"
 
-	if range1.includes(range2) or range2.includes(range1):
+#	if range1.includes(range2) or range2.includes(range1):
+	if range1.overlaps(range2) or range2.overlaps(range1):
 		overlaps += 1
+		o = ": T"
+
+	print(x + o)
 
 print(overlaps)
