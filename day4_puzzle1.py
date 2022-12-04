@@ -40,14 +40,9 @@ overlaps = 0
 for pair in pairs:
 	range1 = pair[0]
 	range2 = pair[1]
-	x = repr(range1) + ", " + repr(range2)
-	o = ": F"
 
 #	if range1.includes(range2) or range2.includes(range1):
 	if range1.overlaps(range2) or range2.overlaps(range1):
 		overlaps += 1
-		o = ": T"
-
-	print(x + o)
 
 print(overlaps)
