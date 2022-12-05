@@ -23,12 +23,13 @@ def _get_top_crates(crate_stacks):
 	return top_crates
 
 
-def _move_crates(crate_stacks, quantity, source_i, destination_i):
+def _move_crates(crate_stacks, quantity, source_i, destination_i, mv_crates_1_by_1):
 	source_stack = crate_stacks[source_i]
 	destination_stack = crate_stacks[destination_i]
 
 	crates_to_move = source_stack[-quantity:]
-	#crates_to_move.reverse()
+	if mv_crates_1_by_1:
+		crates_to_move.reverse()
 	del source_stack[-quantity:]
 
 	destination_stack.extend(crates_to_move)
@@ -65,6 +66,15 @@ def _print_top_crates(crate_stacks):
 
 data_path = Path(argv[1])
 
+puzzle_num = int(argv[2])
+if puzzle_num == 1:
+	mv_crates_1_by_1 = True
+elif puzzle_num == 2:
+	mv_crates_1_by_1 = False
+else:
+	print("ERROR! The puzzle numbers are 1 and 2.")
+	exit()
+
 lines = lines_from_file(data_path)
 
 delimitation = lines.index(_EMPTY_STR)
@@ -91,6 +101,6 @@ for move_line in move_lines:
 	except IndexError:
 		continue
 
-	_move_crates(crate_stacks, quantity, source, destination)
+	_move_crates(crate_stacks, quantity, source, destination, mv_crates_1_by_1)
 
 _print_top_crates(crate_stacks)
