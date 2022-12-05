@@ -5,11 +5,22 @@ from data_reading import lines_from_file
 
 
 _EMPTY_STR = ""
+_HYPHEN = "-"
 _SPACE = " "
 
 
 def _get_top_crates(crate_stacks):
-	return [stack[-1] for stack in crate_stacks]
+	top_crates = list()
+
+	for crate_stack in crate_stacks:
+		try:
+			top_crate = crate_stack[-1]
+		except IndexError:
+			top_crate = _HYPHEN
+
+		top_crates.append(top_crate)
+
+	return top_crates
 
 
 def _move_crates(crate_stacks, quantity, source_i, destination_i):
@@ -17,6 +28,7 @@ def _move_crates(crate_stacks, quantity, source_i, destination_i):
 	destination_stack = crate_stacks[destination_i]
 
 	crates_to_move = source_stack[-quantity:]
+	crates_to_move.reverse()
 	del source_stack[-quantity:]
 
 	destination_stack.extend(crates_to_move)
