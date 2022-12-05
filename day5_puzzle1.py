@@ -86,7 +86,11 @@ for crate_line in crate_lines[1:]:
 			crate_stacks[crate_index].append(crate)
 
 for move_line in move_lines:
-	quantity, source, destination = _parse_crate_move(move_line)
+	try:
+		quantity, source, destination = _parse_crate_move(move_line)
+	except IndexError:
+		continue
+
 	_move_crates(crate_stacks, quantity, source, destination)
 
 _print_top_crates(crate_stacks)
