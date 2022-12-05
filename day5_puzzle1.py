@@ -28,7 +28,7 @@ def _move_crates(crate_stacks, quantity, source_i, destination_i):
 	destination_stack = crate_stacks[destination_i]
 
 	crates_to_move = source_stack[-quantity:]
-	crates_to_move.reverse()
+	#crates_to_move.reverse()
 	del source_stack[-quantity:]
 
 	destination_stack.extend(crates_to_move)
