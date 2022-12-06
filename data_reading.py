@@ -1,4 +1,3 @@
-_COMMA = ","
 _NEW_LINE = "\n"
 
 _FILE_MODE_R = "r"
