@@ -4,7 +4,7 @@ from sys import argv
 from data_reading import lines_from_file
 
 
-def _spot_first_repeated_char(signal, w_start, w_length):
+def _find_first_repeated_char(signal, w_start, w_length):
 	char_indices = dict()
 	repeated_char_index = -1
 
@@ -20,21 +20,26 @@ def _spot_first_repeated_char(signal, w_start, w_length):
 	return repeated_char_index
 
 
+def _find_marker_end(signal, start, window_length):
+	index = start
+	while True:
+		index_found = _find_first_repeated_char(signal, index, window_length)
+
+		if index_found < 0:
+			break
+
+		else:
+			index = index_found + 1
+
+	return index + window_length
+
+
 data_path = Path(argv[1])
 
 signal = lines_from_file(data_path)[0]
 
-index = 0
-window_length = 4
-while True:
-	index_spotted = _spot_first_repeated_char(signal, index, window_length)
+packet_m_e = _find_marker_end(signal, 0, 4)
+message_m_e = _find_marker_end(signal, packet_m_e+1, 14)
 
-	if index_spotted < 0:
-		break
-
-	else:
-		index = index_spotted + 1
-
-marker_end = index + window_length
-
-print(marker_end)
+print(f"Packet marker end: {packet_m_e}")
+print(f"Message marker end: {message_m_e}")
