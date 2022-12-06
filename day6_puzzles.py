@@ -5,17 +5,17 @@ from data_reading import lines_from_file
 
 
 def _spot_first_repeated_char(signal, w_start, w_length):
-	read_chars = list()
+	char_indices = dict()
 	repeated_char_index = -1
 
 	for i in range(w_start, w_start+w_length):
 		char = signal[i]
 
-		if char in read_chars:
-			repeated_char_index = i
+		if char in char_indices.keys():
+			repeated_char_index = char_indices[char]
 
 		else:
-			read_chars.append(char)
+			char_indices[char] = i
 
 	return repeated_char_index
 
