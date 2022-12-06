@@ -13,6 +13,7 @@ def _find_first_repeated_char(signal, w_start, w_length):
 
 		if char in char_indices.keys():
 			repeated_char_index = char_indices[char]
+			break
 
 		else:
 			char_indices[char] = i
