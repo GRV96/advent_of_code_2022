@@ -25,8 +25,9 @@ data_path = Path(argv[1])
 signal = lines_from_file(data_path)[0]
 
 index = 0
+window_length = 4
 while True:
-	index_spotted = _spot_first_repeated_char(signal, index, 4)
+	index_spotted = _spot_first_repeated_char(signal, index, window_length)
 
 	if index_spotted < 0:
 		break
@@ -34,4 +35,6 @@ while True:
 	else:
 		index = index_spotted + 1
 
-print(index)
+marker_end = index + window_length
+
+print(marker_end)
