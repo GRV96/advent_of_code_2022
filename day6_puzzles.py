@@ -35,7 +35,7 @@ def _find_marker_index(signal, start, window_length, find_end):
 		marker_index = index + window_length
 
 	else:
-		marker_index = start
+		marker_index = index
 
 	return marker_index
 
