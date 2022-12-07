@@ -88,11 +88,13 @@ def _update_size_sum(directory):
 	return 0
 
 
-def _go_to_pwd():
+def _get_pwd():
 	pwd = file_tree
 
 	for dir_name in pwd_path[1:]:
 		pwd = pwd.content[dir_name]
+
+	return pwd
 
 
 line_index = 0
@@ -111,14 +113,13 @@ while line_index < num_lines:
 		elif dir_name == _PARENT_DIR:
 			pwd_path.pop()
 			dir_name = pwd_path[-1]
-			_go_to_pwd()
+			pwd = _get_pwd()
+			print(pwd)
 
 			print(_SLASH.join(pwd_path))
 			new_size = _update_size_sum(pwd)
 			print(new_size)
 			size_sum += new_size
-
-			print(pwd)
 
 		else:
 			pwd_path.append(dir_name)
@@ -164,6 +165,8 @@ while line_index < num_lines:
 
 size_sum += _update_size_sum(file_tree)
 
-#_print_dir_struct(file_tree)
+print()
+_print_dir_struct(file_tree)
+print(file_tree.content["a"].content["e"])
 
-print(size_sum)
+#print(size_sum)
