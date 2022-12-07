@@ -53,7 +53,7 @@ def _calculate_dir_size(directory):
 		elif isinstance(value, Directory):
 			directory.size += value.size
 
-	print(f"{directory.name}: {directory.size}")
+#	print(f"{directory.name}: {directory.size}")
 
 
 def _print_dir_struct(dir_struct, tabs=""):
@@ -100,12 +100,9 @@ def _get_pwd():
 line_index = 0
 while line_index < num_lines:
 	line = console_lines[line_index]
-	print("\n" + line)
-	print(_SLASH.join(pwd_path))
 
 	if _CMD_CD in line:
 		dir_name = line[_CMD_CD_LEN:]
-		print(dir_name)
 
 		if dir_name == pwd.name:
 			pass
@@ -114,24 +111,17 @@ while line_index < num_lines:
 			pwd_path.pop()
 			dir_name = pwd_path[-1]
 			pwd = _get_pwd()
-			print(pwd)
 
-			print(_SLASH.join(pwd_path))
 			new_size = _update_size_sum(pwd)
-			print(new_size)
 			size_sum += new_size
 
 		else:
 			pwd_path.append(dir_name)
-			print(_SLASH.join(pwd_path))
 
 			if dir_name not in pwd.content:
-				print("Create dir")
 				pwd.content[dir_name] = Directory(dir_name)
 
-			print(pwd)
 			pwd = pwd.content[dir_name]
-			print(pwd)
 
 		line_index += 1
 
@@ -142,7 +132,6 @@ while line_index < num_lines:
 
 			try:
 				line = console_lines[line_index]
-				print(line)
 			except IndexError:
 				break
 
@@ -155,18 +144,11 @@ while line_index < num_lines:
 
 			if first == _DIR_MARK:
 				created_dir = Directory(second)
-				print(created_dir)
 				pwd.content[second] = created_dir
 
 			elif first[0] in _DIGITS:
 				pwd.content[second] = int(first)
 
-		print(pwd)
-
 size_sum += _update_size_sum(file_tree)
 
-print()
-_print_dir_struct(file_tree)
-print(file_tree.content["a"].content["e"])
-
-#print(size_sum)
+#
