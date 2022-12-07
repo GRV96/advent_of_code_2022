@@ -17,13 +17,18 @@ _SPACE = " "
 
 class Directory:
 
-	def __init__(self, content=dict()):
+	def __init__(self, name, content=dict()):
+		self._name = name
 		self._content = content
 		self._size = 0
 
 	@property
 	def content(self):
 		return self._content
+
+	@property
+	def name(self):
+		return self._name
 
 	@property
 	def size(self):
@@ -43,15 +48,28 @@ def _calculate_dir_size(directory):
 		elif isinstance(value, Directory):
 			directory.size += value.size
 
+	print(f"{directory.name}: {directory.size}")
+
 
 data_path = Path(argv[1])
 
 console_lines = lines_from_file(data_path)
 num_lines = len(console_lines)
 
-file_tree = Directory()
+file_tree = Directory("/")
 dir_path = list()
 pwd = file_tree
+size_sum = 0
+
+
+def _update_size_sum(directory):
+	_calculate_dir_size(directory)
+	size = directory.size
+
+	if size <= 100000:
+		return size
+
+	return 0
 
 
 def _go_to_pwd():
@@ -66,21 +84,21 @@ while line_index < num_lines:
 	line = console_lines[line_index]
 
 	if _CMD_CD in line:
-		dir = line[_CMD_CD_LEN:]
+		dir_name = line[_CMD_CD_LEN:]
 
-		if dir == _PARENT_DIR:
-			_calculate_dir_size(pwd)
+		if dir_name == _PARENT_DIR:
+			size_sum += _update_size_sum(pwd)
 			dir_path.pop()
-			dir = dir_path[-1]
+			dir_name = dir_path[-1]
 			_go_to_pwd()
 
 		else:
-			dir_path.append(dir)
+			dir_path.append(dir_name)
 
-			if dir not in pwd.content:
-				pwd.content[dir] = Directory()
+			if dir_name not in pwd.content:
+				pwd.content[dir_name] = Directory(dir_name)
 
-			pwd = pwd.content[dir]
+			pwd = pwd.content[dir_name]
 
 		line_index += 1
 
@@ -102,11 +120,11 @@ while line_index < num_lines:
 			second = content[1]
 
 			if first == _DIR_MARK:
-				pwd.content[second] = Directory()
+				pwd.content[second] = Directory(second)
 
 			elif first[0] in _DIGITS:
 				pwd.content[second] = int(first)
 
-_calculate_dir_size(file_tree)
+size_sum += _update_size_sum(file_tree)
 
-print(file_tree.size)
+print(size_sum)
