@@ -12,15 +12,20 @@ _CMD_LS = _CMD_PROMPT + " ls"
 _DIGITS = "0123456789"
 _DIR_MARK = "dir"
 _PARENT_DIR = ".."
+_SLASH = "/"
 _SPACE = " "
 
 
 class Directory:
 
-	def __init__(self, name, content=dict()):
+	def __init__(self, name):
 		self._name = name
-		self._content = content
+		self._content = dict()
 		self._size = 0
+
+	def __str__(self):
+		return self.__class__.__name__\
+			+ f" {self._name} ({self._size}): {list(self._content.keys())}"
 
 	@property
 	def content(self):
@@ -48,7 +53,7 @@ def _calculate_dir_size(directory):
 		elif isinstance(value, Directory):
 			directory.size += value.size
 
-#	print(f"{directory.name}: {directory.size}")
+	print(f"{directory.name}: {directory.size}")
 
 
 def _print_dir_struct(dir_struct, tabs=""):
@@ -67,8 +72,8 @@ data_path = Path(argv[1])
 console_lines = lines_from_file(data_path)
 num_lines = len(console_lines)
 
-file_tree = Directory("/")
-pwd_path = list()
+file_tree = Directory(_SLASH)
+pwd_path = [file_tree.name]
 pwd = file_tree
 size_sum = 0
 
@@ -86,30 +91,46 @@ def _update_size_sum(directory):
 def _go_to_pwd():
 	pwd = file_tree
 
-	for dir_name in pwd_path:
+	for dir_name in pwd_path[1:]:
 		pwd = pwd.content[dir_name]
 
 
 line_index = 0
 while line_index < num_lines:
 	line = console_lines[line_index]
+	print("\n" + line)
+	print(_SLASH.join(pwd_path))
 
 	if _CMD_CD in line:
 		dir_name = line[_CMD_CD_LEN:]
+		print(dir_name)
 
-		if dir_name == _PARENT_DIR:
-			size_sum += _update_size_sum(pwd)
+		if dir_name == pwd.name:
+			pass
+
+		elif dir_name == _PARENT_DIR:
 			pwd_path.pop()
 			dir_name = pwd_path[-1]
 			_go_to_pwd()
 
+			print(_SLASH.join(pwd_path))
+			new_size = _update_size_sum(pwd)
+			print(new_size)
+			size_sum += new_size
+
+			print(pwd)
+
 		else:
 			pwd_path.append(dir_name)
+			print(_SLASH.join(pwd_path))
 
 			if dir_name not in pwd.content:
+				print("Create dir")
 				pwd.content[dir_name] = Directory(dir_name)
 
+			print(pwd)
 			pwd = pwd.content[dir_name]
+			print(pwd)
 
 		line_index += 1
 
@@ -120,6 +141,7 @@ while line_index < num_lines:
 
 			try:
 				line = console_lines[line_index]
+				print(line)
 			except IndexError:
 				break
 
@@ -131,13 +153,17 @@ while line_index < num_lines:
 			second = content[1]
 
 			if first == _DIR_MARK:
-				pwd.content[second] = Directory(second)
+				created_dir = Directory(second)
+				print(created_dir)
+				pwd.content[second] = created_dir
 
 			elif first[0] in _DIGITS:
 				pwd.content[second] = int(first)
 
+		print(pwd)
+
 size_sum += _update_size_sum(file_tree)
 
-_print_dir_struct(file_tree)
+#_print_dir_struct(file_tree)
 
 print(size_sum)
