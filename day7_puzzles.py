@@ -44,6 +44,32 @@ class Directory:
 		self._size = new_size
 
 
+class _Puzzle1Calculator:
+
+	def __init__(self):
+		self._filtered_sum = 0
+
+	def calculate(self, file_tree):
+		self._explore_file_tree(file_tree)
+		return self._filtered_sum
+
+	def _explore_file_tree(self, file_tree):
+		dir_size = 0
+
+		for value in file_tree.content.values():
+
+			if isinstance(value, Directory):
+				dir_size += self._explore_file_tree(value)
+
+			else:
+				dir_size += value
+
+		if dir_size <= 100000:
+			self._filtered_sum += dir_size
+
+		return dir_size
+
+
 def _calculate_dir_size(directory):
 	for value in directory.content.values():
 
@@ -75,17 +101,6 @@ num_lines = len(console_lines)
 file_tree = Directory(_SLASH)
 pwd_path = [file_tree.name]
 pwd = file_tree
-size_sum = 0
-
-
-def _update_size_sum(directory):
-	_calculate_dir_size(directory)
-	size = directory.size
-
-	if size <= 100000:
-		return size
-
-	return 0
 
 
 def _get_pwd():
@@ -111,9 +126,6 @@ while line_index < num_lines:
 			pwd_path.pop()
 			dir_name = pwd_path[-1]
 			pwd = _get_pwd()
-
-			new_size = _update_size_sum(pwd)
-			size_sum += new_size
 
 		else:
 			pwd_path.append(dir_name)
@@ -149,6 +161,6 @@ while line_index < num_lines:
 			elif first[0] in _DIGITS:
 				pwd.content[second] = int(first)
 
-size_sum += _update_size_sum(file_tree)
-
-#
+calculator = _Puzzle1Calculator()
+filtered_sum = calculator.calculate(file_tree)
+print(filtered_sum)
