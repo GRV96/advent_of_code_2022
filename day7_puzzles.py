@@ -48,7 +48,18 @@ def _calculate_dir_size(directory):
 		elif isinstance(value, Directory):
 			directory.size += value.size
 
-	print(f"{directory.name}: {directory.size}")
+#	print(f"{directory.name}: {directory.size}")
+
+
+def _print_dir_struct(dir_struct, tabs=""):
+	for key, value in dir_struct.content.items():
+
+		if isinstance(value, Directory):
+			print(f"{tabs}{key}:")
+			_print_dir_struct(value, tabs+"\t")
+
+		else:
+			print(f"{tabs}{key}: {value}")
 
 
 data_path = Path(argv[1])
@@ -57,7 +68,7 @@ console_lines = lines_from_file(data_path)
 num_lines = len(console_lines)
 
 file_tree = Directory("/")
-dir_path = list()
+pwd_path = list()
 pwd = file_tree
 size_sum = 0
 
@@ -75,7 +86,7 @@ def _update_size_sum(directory):
 def _go_to_pwd():
 	pwd = file_tree
 
-	for dir_name in dir_path:
+	for dir_name in pwd_path:
 		pwd = pwd.content[dir_name]
 
 
@@ -88,12 +99,12 @@ while line_index < num_lines:
 
 		if dir_name == _PARENT_DIR:
 			size_sum += _update_size_sum(pwd)
-			dir_path.pop()
-			dir_name = dir_path[-1]
+			pwd_path.pop()
+			dir_name = pwd_path[-1]
 			_go_to_pwd()
 
 		else:
-			dir_path.append(dir_name)
+			pwd_path.append(dir_name)
 
 			if dir_name not in pwd.content:
 				pwd.content[dir_name] = Directory(dir_name)
@@ -126,5 +137,7 @@ while line_index < num_lines:
 				pwd.content[second] = int(first)
 
 size_sum += _update_size_sum(file_tree)
+
+_print_dir_struct(file_tree)
 
 print(size_sum)
