@@ -93,16 +93,6 @@ class _PuzzleCalculator:
 		return dir_size
 
 
-def _calculate_dir_size(directory):
-	for value in directory.content.values():
-
-		if isinstance(value, int):
-			directory.size += value
-
-		elif isinstance(value, Directory):
-			directory.size += value.size
-
-
 def _print_dir_struct(dir_struct, tabs=""):
 	for key, value in dir_struct.content.items():
 
