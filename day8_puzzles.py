@@ -37,15 +37,11 @@ def _watch_column(tree_grid, col_j, visible_coords):
 			stop_i = grid_size - 1
 			step_i = 1
 
-		# The tree on the edge is visible.
+		# The trees on the edge are visible.
 		visible_coords.add((stop_i, col_j))
-
-		print(f"{start_i} {stop_i} {step_i}")
-		print(f"previous: {prev_height}")
 
 		for i in range(start_i, stop_i, step_i): # Column index
 			height = tree_grid[i][col_j]
-			print(i)
 
 			if height > prev_height:
 				visible_coords.add((i, col_j))
@@ -86,6 +82,21 @@ def _watch_row(tree_grid, row_i, visible_coords):
 	_watch_row_internal(True)
 
 
+def _print_tree_grid(visible_trees):
+	for i in range(grid_size):
+		row = list()
+
+		for j in range(grid_size):
+
+			if (i, j) in visible_trees.coords:
+				row.append("V")
+
+			else:
+				row.append("x")
+
+		print(" ".join(row))
+
+
 data_path = Path(argv[1])
 
 tree_grid = data_from_lines(data_path, lambda line: [int(dgt) for dgt in line])
@@ -103,18 +114,5 @@ for i in range(1, grid_size-1): # Line index
 
 for j in range(1, grid_size-1): # Column index
 	_watch_column(tree_grid, j, visible_trees)
-
-for i in range(grid_size):
-	row = list()
-
-	for j in range(grid_size):
-
-		if (i, j) in visible_trees.coords:
-			row.append("V")
-
-		else:
-			row.append("x")
-
-	print(" ".join(row))
 
 print(len(visible_trees.coords))
