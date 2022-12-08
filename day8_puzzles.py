@@ -47,7 +47,7 @@ def _watch_column(tree_grid, col_j, visible_coords):
 			height = tree_grid[i][col_j]
 			print(i)
 
-			if height >= prev_height:
+			if height > prev_height:
 				visible_coords.add((i, col_j))
 				prev_height = height
 
@@ -78,7 +78,7 @@ def _watch_row(tree_grid, row_i, visible_coords):
 		for j in range(start_j, stop_j, step_j): # Column index
 			height = tree_row[j]
 
-			if height >= prev_height:
+			if height > prev_height:
 				visible_coords.add((row_i, j))
 				prev_height = height
 
