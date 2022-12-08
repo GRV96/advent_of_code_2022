@@ -58,14 +58,15 @@ class _PuzzleCalculator:
 	def _eval_del_candidate(self, req_mem, deletion_candidate):
 		candidate_size = deletion_candidate.size
 
-		if self._dir_to_del is None and candidate_size >= req_mem:
-			self._dir_to_del = deletion_candidate
+		if candidate_size >= req_mem:
 
-		else:
-			if candidate_size >= req_mem\
-					and candidate_size < self._dir_to_del.size:
-				print(candidate_size)
+			if self._dir_to_del is None:
 				self._dir_to_del = deletion_candidate
+
+			else:
+				if candidate_size < self._dir_to_del.size:
+					print(candidate_size)
+					self._dir_to_del = deletion_candidate
 
 	def _explore_file_tree(self, file_tree):
 		dir_size = 0
