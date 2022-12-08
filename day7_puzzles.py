@@ -47,11 +47,11 @@ class Directory:
 class _PuzzleCalculator:
 
 	def __init__(self):
-		self._filtered_sum = 0
-		self._all_dirs = list()
-		self._dir_to_del = None
+		self._reset()
 
 	def calculate(self, file_tree):
+		self._reset()
+
 		file_tree_size = self._explore_file_tree(file_tree)
 		file_tree.size = file_tree_size
 
@@ -71,7 +71,6 @@ class _PuzzleCalculator:
 
 			else:
 				if candidate_size < self._dir_to_del.size:
-					print(candidate_size)
 					self._dir_to_del = deletion_candidate
 
 	def _explore_file_tree(self, file_tree):
@@ -91,6 +90,11 @@ class _PuzzleCalculator:
 			self._filtered_sum += dir_size
 
 		return dir_size
+
+	def _reset(self):
+		self._filtered_sum = 0
+		self._all_dirs = list()
+		self._dir_to_del = None
 
 
 def _print_dir_struct(dir_struct, tabs=""):
