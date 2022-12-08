@@ -18,22 +18,22 @@ _SPACE = " "
 
 class Directory:
 
-	def __init__(self, name):
-		self._name = name
+	def __init__(self, path):
+		self._path = path
 		self._content = dict()
 		self._size = 0
 
 	def __str__(self):
 		return self.__class__.__name__\
-			+ f" {self._name} ({self._size}): {list(self._content.keys())}"
+			+ f" {self._path} ({self._size}): {list(self._content.keys())}"
 
 	@property
 	def content(self):
 		return self._content
 
 	@property
-	def name(self):
-		return self._name
+	def path(self):
+		return self._path
 
 	@property
 	def size(self):
@@ -99,7 +99,7 @@ console_lines = lines_from_file(data_path)
 num_lines = len(console_lines)
 
 file_tree = Directory(_SLASH)
-pwd_path = [file_tree.name]
+pwd_path = [_SLASH]
 pwd = file_tree
 
 
@@ -119,19 +119,24 @@ while line_index < num_lines:
 	if _CMD_CD in line:
 		dir_name = line[_CMD_CD_LEN:]
 
-		if dir_name == pwd.name:
+		if dir_name == pwd.path:
 			pass
 
 		elif dir_name == _PARENT_DIR:
 			pwd_path.pop()
-			dir_name = pwd_path[-1]
+			try:
+				dir_name = pwd_path[-1]
+			except IndexError as ie:
+				_print_dir_struct(file_tree)
+				exit()
 			pwd = _get_pwd()
 
 		else:
 			pwd_path.append(dir_name)
 
 			if dir_name not in pwd.content:
-				pwd.content[dir_name] = Directory(dir_name)
+				pwd.content[dir_name] =\
+					Directory(_SLASH + _SLASH.join(pwd_path[1:]))
 
 			pwd = pwd.content[dir_name]
 
@@ -155,7 +160,8 @@ while line_index < num_lines:
 			second = content[1]
 
 			if first == _DIR_MARK:
-				created_dir = Directory(second)
+				created_dir = Directory(
+					_SLASH + _SLASH.join(pwd_path[1:]) + second)
 				pwd.content[second] = created_dir
 
 			elif first[0] in _DIGITS:
@@ -164,3 +170,4 @@ while line_index < num_lines:
 calculator = _Puzzle1Calculator()
 filtered_sum = calculator.calculate(file_tree)
 print(filtered_sum)
+_print_dir_struct(file_tree)
