@@ -44,14 +44,28 @@ class Directory:
 		self._size = new_size
 
 
-class _Puzzle1Calculator:
+class _PuzzleCalculator:
 
 	def __init__(self):
 		self._filtered_sum = 0
+		self._dir_to_del = None
 
 	def calculate(self, file_tree):
-		self._explore_file_tree(file_tree)
-		return self._filtered_sum
+		file_tree_size = self._explore_file_tree(file_tree)
+		file_tree.size = file_tree_size
+		return self._filtered_sum, self._dir_to_del
+
+	def _eval_del_candidate(self, req_mem, deletion_candidate):
+		candidate_size = deletion_candidate.size
+
+		if self._dir_to_del is None and candidate_size >= req_mem:
+			self._dir_to_del = deletion_candidate
+
+		else:
+			if candidate_size >= req_mem\
+					and candidate_size < self._dir_to_del.size:
+				print(candidate_size)
+				self._dir_to_del = deletion_candidate
 
 	def _explore_file_tree(self, file_tree):
 		dir_size = 0
@@ -60,6 +74,8 @@ class _Puzzle1Calculator:
 
 			if isinstance(value, Directory):
 				dir_size += self._explore_file_tree(value)
+				value.size = dir_size
+				self._eval_del_candidate(30000000, value)
 
 			else:
 				dir_size += value
@@ -161,6 +177,7 @@ while line_index < num_lines:
 			elif first[0] in _DIGITS:
 				pwd.content[second] = int(first)
 
-calculator = _Puzzle1Calculator()
-filtered_sum = calculator.calculate(file_tree)
-print(filtered_sum)
+calculator = _PuzzleCalculator()
+filtered_sum, dir_to_del = calculator.calculate(file_tree)
+print(f"Puzzle 1: {filtered_sum}")
+print(f"Puzzle 2: {dir_to_del.size}")
