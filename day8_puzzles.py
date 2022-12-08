@@ -101,57 +101,48 @@ def _tree_scenic_score(tree_grid, tree_i, tree_j):
 	scenic_score = 1
 	tree_height = tree_grid[tree_i][tree_j]
 
-	def _keep_counting(i, j):
-		try:
-			height = tree_grid[i][j]
-		except IndexError:
-			return False
+	def _look_at_trees(inc_i, inc_j):
+		i = tree_i
+		j = tree_j
+		sawn_trees = 0
 
-		return height < tree_height
+		while True:
+			i += inc_i
+			j += inc_j
 
-	i = tree_i
-	sawn_trees = 0
-	while True:
-		i -= 1
-		sawn_trees += 1
+			try:
+				height = tree_grid[i][j]
+			except IndexError:
+				break
 
-		if not _keep_counting(i, tree_j):
-			break
+			sawn_trees += 1
 
-	scenic_score *= sawn_trees
+			if height >= tree_height:
+				break
 
-	i = tree_i
-	sawn_trees = 0
-	while True:
-		i += 1
-		sawn_trees += 1
+		return sawn_trees
 
-		if not _keep_counting(i, tree_j):
-			break
+	sawn_trees = _look_at_trees(1, 0)
+	print(sawn_trees)
+	if sawn_trees > 0:
+		scenic_score *= sawn_trees
 
-	scenic_score *= sawn_trees
+	sawn_trees = _look_at_trees(-1, 0)
+	print(sawn_trees)
+	if sawn_trees > 0:
+		scenic_score *= sawn_trees
 
-	j = tree_j
-	sawn_trees = 0
-	while True:
-		i -= 1
-		sawn_trees += 1
+	sawn_trees = _look_at_trees(0, 1)
+	print(sawn_trees)
+	if sawn_trees > 0:
+		scenic_score *= sawn_trees
 
-		if not _keep_counting(tree_i, j):
-			break
+	sawn_trees = _look_at_trees(0, -1)
+	print(sawn_trees)
+	if sawn_trees > 0:
+		scenic_score *= sawn_trees
 
-	scenic_score *= sawn_trees
-
-	j = tree_j
-	sawn_trees = 0
-	while True:
-		i += 1
-		sawn_trees += 1
-
-		if not _keep_counting(tree_i, j):
-			break
-
-	scenic_score *= sawn_trees
+	print(f"Tree ({tree_i}, {tree_j}): {scenic_score}\n")
 
 	return scenic_score
 
