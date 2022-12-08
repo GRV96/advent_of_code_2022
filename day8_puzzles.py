@@ -97,6 +97,65 @@ def _print_tree_grid(visible_trees):
 		print(" ".join(row))
 
 
+def _tree_scenic_score(tree_grid, tree_i, tree_j):
+	scenic_score = 1
+	tree_height = tree_grid[tree_i][tree_j]
+
+	def _keep_counting(i, j):
+		try:
+			height = tree_grid[i][j]
+		except IndexError:
+			return False
+
+		return height < tree_height
+
+	i = tree_i
+	sawn_trees = 0
+	while True:
+		i -= 1
+		sawn_trees += 1
+
+		if not _keep_counting(i, tree_j):
+			break
+
+	scenic_score *= sawn_trees
+
+	i = tree_i
+	sawn_trees = 0
+	while True:
+		i += 1
+		sawn_trees += 1
+
+		if not _keep_counting(i, tree_j):
+			break
+
+	scenic_score *= sawn_trees
+
+	j = tree_j
+	sawn_trees = 0
+	while True:
+		i -= 1
+		sawn_trees += 1
+
+		if not _keep_counting(tree_i, j):
+			break
+
+	scenic_score *= sawn_trees
+
+	j = tree_j
+	sawn_trees = 0
+	while True:
+		i += 1
+		sawn_trees += 1
+
+		if not _keep_counting(tree_i, j):
+			break
+
+	scenic_score *= sawn_trees
+
+	return scenic_score
+
+
 data_path = Path(argv[1])
 
 tree_grid = data_from_lines(data_path, lambda line: [int(dgt) for dgt in line])
@@ -116,3 +175,14 @@ for j in range(1, grid_size-1): # Column index
 	_watch_column(tree_grid, j, visible_trees)
 
 print(len(visible_trees.coords))
+
+max_scenic_score = 0
+for i in range(grid_size):
+
+	for j in range(grid_size):
+		scenic_score = _tree_scenic_score(tree_grid, i, j)
+
+		if scenic_score > max_scenic_score:
+			max_scenic_score = scenic_score
+
+print(max_scenic_score)
