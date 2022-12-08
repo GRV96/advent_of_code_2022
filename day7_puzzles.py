@@ -79,8 +79,6 @@ def _calculate_dir_size(directory):
 		elif isinstance(value, Directory):
 			directory.size += value.size
 
-#	print(f"{directory.name}: {directory.size}")
-
 
 def _print_dir_struct(dir_struct, tabs=""):
 	for key, value in dir_struct.content.items():
@@ -124,11 +122,7 @@ while line_index < num_lines:
 
 		elif dir_name == _PARENT_DIR:
 			pwd_path.pop()
-			try:
-				dir_name = pwd_path[-1]
-			except IndexError as ie:
-				_print_dir_struct(file_tree)
-				exit()
+			dir_name = pwd_path[-1]
 			pwd = _get_pwd()
 
 		else:
@@ -170,4 +164,3 @@ while line_index < num_lines:
 calculator = _Puzzle1Calculator()
 filtered_sum = calculator.calculate(file_tree)
 print(filtered_sum)
-_print_dir_struct(file_tree)
