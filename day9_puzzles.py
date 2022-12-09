@@ -33,6 +33,9 @@ class Coordinates:
 		self._x += delta_x
 		self._y += delta_y
 
+	def to_tuple(self):
+		return (self._x, self._y)
+
 	@property
 	def x(self):
 		return self._x
@@ -53,7 +56,7 @@ class Knot:
 
 	def move(self, delta_x, delta_y):
 		self._coordinates.move(delta_x, delta_y)
-		self._unique_positions.add((self._coordinates.x, self._coordinates.y))
+		self._unique_positions.add(self._coordinates.to_tuple())
 
 		if self._next_knot is not None:
 			self._pull_next_knot()
