@@ -140,6 +140,7 @@ tail = Knot(Coordinates(0, 0), None)
 knot = tail
 for _ in range(9):
 	prev_knot = Knot(Coordinates(0, 0), knot)
+	knot = prev_knot
 head = knot
 
 
