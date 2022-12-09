@@ -25,8 +25,8 @@ class Coordinates:
 		return f"({self._x}, {self._y})"
 
 	def dist_x_y(self, other):
-		dist_x = other._x + self._x
-		dist_y = other._y + self._y
+		dist_x = other._x - self._x
+		dist_y = other._y - self._y
 		return dist_x, dist_y
 
 	def move(self, delta_x, delta_y):
@@ -98,10 +98,12 @@ def _move_head(delta_x, delta_y):
 	sign_y = _sign(dist_y)
 
 	if dist_x == 0 and dist_y != 0:
+		print("Vertical")
 		x_move = dist_x
 		y_move = dist_y-(1*sign_y)
 
 	elif dist_x != 0 and dist_y == 0:
+		print("Horizontal")
 		x_move = dist_x-(1*sign_x)
 		y_move = dist_y
 
@@ -115,8 +117,11 @@ def _move_head(delta_x, delta_y):
 		print(f"Distance: ({dist_x}, {dist_y})")
 		exit()
 
-	tail_positions.add((tail.x + x_move, tail.y + y_move))
+	new_position = (tail.x + x_move, tail.y + y_move)
+	tail_positions.add(new_position)
 	tail.move(x_move, y_move)
+	print(f"Moving to {new_position}")
+	print(f"Tail: {tail}")
 
 
 for move in moves:
