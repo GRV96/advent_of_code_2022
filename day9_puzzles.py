@@ -151,12 +151,12 @@ moves = data_from_lines(data_path, _parse_move)
 
 puzzle_num = int(argv[2])
 if puzzle_num == 1:
-	start_i = 0
-	start_j = 0
+	start_x = 0
+	start_y = 0
 	num_knots = 2
 elif puzzle_num == 2:
-	start_i = 11
-	start_j = 5
+	start_x = 11
+	start_y = 5
 	num_knots = 10
 else:
 	print("ERROR! The puzzle numbers are 1 and 2.")
@@ -164,10 +164,10 @@ else:
 
 tail_positions = set()
 
-tail = Knot(Coordinates(start_i, start_j), None)
+tail = Knot(Coordinates(start_x, start_y), None)
 knot = tail
 for _ in range(num_knots-1):
-	prev_knot = Knot(Coordinates(start_i, start_j), knot)
+	prev_knot = Knot(Coordinates(start_x, start_y), knot)
 	knot = prev_knot
 head = knot
 
