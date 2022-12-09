@@ -51,6 +51,9 @@ class Knot:
 		self._unique_positions = set()
 		self._next_knot = next_knot
 
+	def dist_x_y(self, other):
+		return self._coordinates.dist_x_y(other._coordinates)
+
 	def get_num_positions(self):
 		return len(self._unique_positions)
 
@@ -63,7 +66,7 @@ class Knot:
 
 	def _pull_next_knot(self):
 		dist_x, dist_y =\
-			self._next_knot._coordinates.dist_x_y(self._coordinates)
+			self._next_knot.dist_x_y(self)
 
 		sign_x = _sign(dist_x)
 		sign_y = _sign(dist_y)
