@@ -41,6 +41,57 @@ class Coordinates:
 	def y(self):
 		return self._y
 
+class Knot:
+
+	def __init__(self, coordinates, next_knot):
+		self._coordinates = coordinates
+		self._unique_positions = set()
+		self._next_knot = next_knot
+
+	def get_num_positions(self):
+		return len(self._unique_positions)
+
+	def move(self, delta_x, delta_y):
+		self._coordinates.move(delta_x, delta_y)
+		self._unique_positions.add((self._coordinates.x, self._coordinates.y))
+
+		if self._next_knot is not None:
+			self._pull_next_knot()
+
+	def _pull_next_knot(self):
+		dist_x, dist_y =\
+			self._next_knot._coordinates.dist_x_y(self._coordinates)
+
+		sign_x = _sign(dist_x)
+		sign_y = _sign(dist_y)
+
+		if dist_x == 0 and dist_y != 0:
+			x_move = dist_x
+			y_move = dist_y-(1*sign_y)
+
+		elif dist_x != 0 and dist_y == 0:
+			x_move = dist_x-(1*sign_x)
+			y_move = dist_y
+
+		elif abs(dist_x) <= 1 and abs(dist_y) <= 1:
+			x_move = 0
+			y_move = 0
+
+		elif abs(dist_x) > 0 and abs(dist_y) > 0:
+			x_move = sign_x
+			y_move = sign_y
+
+		self._next_knot.coordinates.move(x_move, y_move)
+
+	@property
+	def coordinates(self):
+		return self._coordinates
+
+	@property
+	def next_knot(self):
+		return self._next_knot
+
+
 class Move:
 
 	def __init__(self, direction, distance):
@@ -81,9 +132,15 @@ def _sign(number):
 data_path = Path(argv[1])
 moves = data_from_lines(data_path, _parse_move)
 
-head = Coordinates(0, 0)
-tail = Coordinates(0, 0)
+#head = Coordinates(0, 0)
+#tail = Coordinates(0, 0)
 tail_positions = set()
+
+tail = Knot(Coordinates(0, 0), None)
+knot = tail
+for _ in range(9):
+	prev_knot = Knot(Coordinates(0, 0), knot)
+head = knot
 
 
 def _move_head(delta_x, delta_y):
@@ -123,18 +180,18 @@ for move in moves:
 
 	if direction == _UP:
 		for _ in range(distance):
-			_move_head(0, 1)
+			head.move(0, 1)
 
 	elif direction == _DOWN:
 		for _ in range(distance):
-			_move_head(0, -1)
+			head.move(0, -1)
 
 	elif direction == _LEFT:
 		for _ in range(distance):
-			_move_head(-1, 0)
+			head.move(-1, 0)
 
 	elif direction == _RIGHT:
 		for _ in range(distance):
-			_move_head(1, 0)
+			head.move(1, 0)
 
-print(len(tail_positions))
+print(tail.get_num_positions())
