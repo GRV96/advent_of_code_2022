@@ -19,7 +19,10 @@ class Coordinates:
 		self._y = y
 
 	def __repr__(self):
-		return self.__class__.__name__ + f"({self._x}, {self._y})"
+		return self.__class__.__name__ + str(self)
+
+	def __str__(self):
+		return f"({self._x}, {self._y})"
 
 	def dist_x_y(self, other):
 		dist_x = other._x + self._x
@@ -87,6 +90,10 @@ def _move_head(delta_x, delta_y):
 	head.move(delta_x, delta_y)
 	dist_x, dist_y = tail.dist_x_y(head)
 
+	print(f"Head: {head}")
+	print(f"Tail: {tail}")
+	print(f"Distance: ({dist_x}, {dist_y})")
+
 	sign_x = _sign(dist_x)
 	sign_y = _sign(dist_y)
 
@@ -103,9 +110,9 @@ def _move_head(delta_x, delta_y):
 		y_move = sign_y
 
 	else:
-		print(f"Distance: ({dist_x}, {dist_y})")
 		print(f"Head: {head}")
 		print(f"Tail: {tail}")
+		print(f"Distance: ({dist_x}, {dist_y})")
 		exit()
 
 	tail_positions.add((tail.x + x_move, tail.y + y_move))
@@ -115,7 +122,7 @@ def _move_head(delta_x, delta_y):
 for move in moves:
 	direction = move.direction
 	distance = move.distance
-	print(move)
+	print(f"\n{move}")
 
 	if direction == _UP:
 		for _ in range(distance):
