@@ -71,7 +71,7 @@ def _sign(number):
 	if number > 0:
 		return 1
 
-	elif number > 0:
+	elif number < 0:
 		return -1
 
 	else:
@@ -96,6 +96,7 @@ def _move_head(delta_x, delta_y):
 
 	sign_x = _sign(dist_x)
 	sign_y = _sign(dist_y)
+	print(f"Signs: ({sign_x}, {sign_y})")
 
 	if dist_x == 0 and dist_y != 0:
 		print("Vertical")
@@ -112,6 +113,7 @@ def _move_head(delta_x, delta_y):
 		y_move = 0
 
 	elif abs(dist_x) > 0 and abs(dist_y) > 0:
+		print("Diagonal")
 		x_move = sign_x
 		y_move = sign_y
 
@@ -124,7 +126,7 @@ def _move_head(delta_x, delta_y):
 	new_position = (tail.x + x_move, tail.y + y_move)
 	tail_positions.add(new_position)
 	tail.move(x_move, y_move)
-	print(f"Moving to {new_position}")
+	print(f"Moving of ({x_move}, {y_move}) to {new_position}")
 
 
 for move in moves:
