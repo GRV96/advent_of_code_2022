@@ -107,6 +107,10 @@ def _move_head(delta_x, delta_y):
 		x_move = dist_x-(1*sign_x)
 		y_move = dist_y
 
+	elif abs(dist_x) <= 1 and abs(dist_y) <= 1:
+		x_move = 0
+		y_move = 0
+
 	elif abs(dist_x) > 0 and abs(dist_y) > 0:
 		x_move = sign_x
 		y_move = sign_y
@@ -121,7 +125,6 @@ def _move_head(delta_x, delta_y):
 	tail_positions.add(new_position)
 	tail.move(x_move, y_move)
 	print(f"Moving to {new_position}")
-	print(f"Tail: {tail}")
 
 
 for move in moves:
