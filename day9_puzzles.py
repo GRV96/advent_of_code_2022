@@ -111,6 +111,17 @@ class Move:
 		return self._distance
 
 
+def _get_knot(rope, knot_i):
+	knot = rope
+
+	for _ in range(knot_i):
+		try:
+			knot = knot.next_knot
+		except AttributeError:
+			break
+
+	return knot
+
 def _parse_move(move_line):
 	elements = move_line.split(_SPACE)
 	direction = elements[0]
@@ -194,5 +205,7 @@ for move in moves:
 	elif direction == _RIGHT:
 		for _ in range(distance):
 			head.move(1, 0)
+
+	print(_get_knot(head, 1).coordinates)
 
 print(tail.get_num_positions())
