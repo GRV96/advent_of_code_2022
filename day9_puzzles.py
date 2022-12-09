@@ -22,8 +22,8 @@ class Coordinates:
 		return self.__class__.__name__ + f"({self._x}, {self._y})"
 
 	def dist_x_y(self, other):
-		dist_x = other._x = self._x
-		dist_y = other._y = self._y
+		dist_x = other._x + self._x
+		dist_y = other._y + self._y
 		return dist_x, dist_y
 
 	def move(self, delta_x, delta_y):
