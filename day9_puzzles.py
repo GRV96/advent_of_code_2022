@@ -162,8 +162,6 @@ else:
 	print("ERROR! The puzzle numbers are 1 and 2.")
 	exit()
 
-tail_positions = set()
-
 tail = Knot(Coordinates(start_x, start_y), None)
 knot = tail
 for _ in range(num_knots-1):
