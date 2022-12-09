@@ -62,21 +62,14 @@ class Knot:
 		dist_x, dist_y =\
 			self._next_knot._coordinates.dist_x_y(self._coordinates)
 
-		print(f"Self: {self._coordinates}")
-		print(f"Next: {self._next_knot._coordinates}")
-		print(f"Distance: ({dist_x}, {dist_y})")
-
 		sign_x = _sign(dist_x)
 		sign_y = _sign(dist_y)
-		print(f"Signs: ({sign_x}, {sign_y})")
 
 		if dist_x == 0 and dist_y != 0:
-			print("Vertical")
 			x_move = dist_x
 			y_move = dist_y-(1*sign_y)
 
 		elif dist_x != 0 and dist_y == 0:
-			print("Horizontal")
 			x_move = dist_x-(1*sign_x)
 			y_move = dist_y
 
@@ -85,12 +78,10 @@ class Knot:
 			y_move = 0
 
 		elif abs(dist_x) > 0 and abs(dist_y) > 0:
-			print("Diagonal")
 			x_move = sign_x
 			y_move = sign_y
 
 		self._next_knot.move(x_move, y_move)
-		print(f"Moving of ({x_move}, {y_move}) to {self._next_knot.coordinates}")
 
 	@property
 	def coordinates(self):
@@ -173,59 +164,9 @@ for _ in range(num_knots-1):
 	prev_knot = Knot(Coordinates(start_i, start_j), knot)
 	knot = prev_knot
 head = knot
-#print(head.next_knot)
-#print(tail.next_knot)
-
-#counter = 0
-#while True:
-#	knot = _get_knot(head, counter)
-
-#	if knot is None:
-#		break
-
-#	if knot.next_knot is None:
-#		print(f"{counter}: x")
-
-#	else:
-#		knot = knot.next_knot
-#		print(f"{counter}: ->")
-
-#	counter += 1
-
-
-def _move_head(delta_x, delta_y):
-	head.move(delta_x, delta_y)
-	dist_x, dist_y = tail.dist_x_y(head)
-
-	sign_x = _sign(dist_x)
-	sign_y = _sign(dist_y)
-
-	if dist_x == 0 and dist_y != 0:
-		x_move = dist_x
-		y_move = dist_y-(1*sign_y)
-
-	elif dist_x != 0 and dist_y == 0:
-		x_move = dist_x-(1*sign_x)
-		y_move = dist_y
-
-	elif abs(dist_x) <= 1 and abs(dist_y) <= 1:
-		x_move = 0
-		y_move = 0
-
-	elif abs(dist_x) > 0 and abs(dist_y) > 0:
-		x_move = sign_x
-		y_move = sign_y
-
-	else:
-		exit()
-
-	new_position = (tail.x + x_move, tail.y + y_move)
-	tail_positions.add(new_position)
-	tail.move(x_move, y_move)
 
 
 for move in moves:
-	print(f"\n{move}")
 	direction = move.direction
 	distance = move.distance
 
@@ -244,8 +185,5 @@ for move in moves:
 	elif direction == _RIGHT:
 		for _ in range(distance):
 			head.move(1, 0)
-
-	print(tail.coordinates)
-#	print(_get_knot(head, 1).coordinates)
 
 print(tail.get_num_positions())
