@@ -90,21 +90,14 @@ def _move_head(delta_x, delta_y):
 	head.move(delta_x, delta_y)
 	dist_x, dist_y = tail.dist_x_y(head)
 
-	print(f"Head: {head}")
-	print(f"Tail: {tail}")
-	print(f"Distance: ({dist_x}, {dist_y})")
-
 	sign_x = _sign(dist_x)
 	sign_y = _sign(dist_y)
-	print(f"Signs: ({sign_x}, {sign_y})")
 
 	if dist_x == 0 and dist_y != 0:
-		print("Vertical")
 		x_move = dist_x
 		y_move = dist_y-(1*sign_y)
 
 	elif dist_x != 0 and dist_y == 0:
-		print("Horizontal")
 		x_move = dist_x-(1*sign_x)
 		y_move = dist_y
 
@@ -113,26 +106,20 @@ def _move_head(delta_x, delta_y):
 		y_move = 0
 
 	elif abs(dist_x) > 0 and abs(dist_y) > 0:
-		print("Diagonal")
 		x_move = sign_x
 		y_move = sign_y
 
 	else:
-		print(f"Head: {head}")
-		print(f"Tail: {tail}")
-		print(f"Distance: ({dist_x}, {dist_y})")
 		exit()
 
 	new_position = (tail.x + x_move, tail.y + y_move)
 	tail_positions.add(new_position)
 	tail.move(x_move, y_move)
-	print(f"Moving of ({x_move}, {y_move}) to {new_position}")
 
 
 for move in moves:
 	direction = move.direction
 	distance = move.distance
-	print(f"\n{move}")
 
 	if direction == _UP:
 		for _ in range(distance):
