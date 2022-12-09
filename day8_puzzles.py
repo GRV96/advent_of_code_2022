@@ -112,13 +112,11 @@ def _tree_scenic_score(tree_grid, tree_i, tree_j):
 
 			try:
 				height = tree_grid[i][j]
-				print(f"({i}, {j}): {height}")
 			except IndexError:
 				break
 
 			if i >= 0 and j >= 0:
 				sawn_trees += 1
-				print("V")
 			else:
 				break
 
@@ -128,26 +126,20 @@ def _tree_scenic_score(tree_grid, tree_i, tree_j):
 		return sawn_trees
 
 	sawn_trees = _look_at_trees(1, 0)
-	print(f"Trees: {sawn_trees}")
 	if sawn_trees > 0:
 		scenic_score *= sawn_trees
 
 	sawn_trees = _look_at_trees(-1, 0)
-	print(f"Trees: {sawn_trees}")
 	if sawn_trees > 0:
 		scenic_score *= sawn_trees
 
 	sawn_trees = _look_at_trees(0, 1)
-	print(f"Trees: {sawn_trees}")
 	if sawn_trees > 0:
 		scenic_score *= sawn_trees
 
 	sawn_trees = _look_at_trees(0, -1)
-	print(f"Trees: {sawn_trees}")
 	if sawn_trees > 0:
 		scenic_score *= sawn_trees
-
-	print(f"Tree ({tree_i}, {tree_j}): {scenic_score}\n")
 
 	return scenic_score
 
