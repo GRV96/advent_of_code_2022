@@ -143,14 +143,23 @@ def _sign(number):
 data_path = Path(argv[1])
 moves = data_from_lines(data_path, _parse_move)
 
-#head = Coordinates(0, 0)
-#tail = Coordinates(0, 0)
+puzzle_num = int(argv[2])
+if puzzle_num == 1:
+	start = Coordinates(0, 0)
+	num_knots = 2
+elif puzzle_num == 2:
+	start = Coordinates(11, 5)
+	num_knots = 10
+else:
+	print("ERROR! The puzzle numbers are 1 and 2.")
+	exit()
+
 tail_positions = set()
 
-tail = Knot(Coordinates(0, 0), None)
+tail = Knot(start, None)
 knot = tail
-for _ in range(9):
-	prev_knot = Knot(Coordinates(0, 0), knot)
+for _ in range(num_knots-1):
+	prev_knot = Knot(start, knot)
 	knot = prev_knot
 head = knot
 
